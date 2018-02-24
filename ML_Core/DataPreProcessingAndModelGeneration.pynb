@@ -1,0 +1,5 @@
+This python notebook contains code to :
+  1. Preprocess to cleanup data values of any unwanted stuffs.
+  2. Use preprocessed data to generate the prediction model.
+
+The generated model will be saved in pickel format to be used by a separate script which will handle the prediction of incoming products.
