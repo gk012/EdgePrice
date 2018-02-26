@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Contact V4</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/icons/favicon.ico') }}"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animate/animate.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/css-hamburgers/hamburgers.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/animsition/css/animsition.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.css') }}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/util.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+<!--===============================================================================================-->
+	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/angular.min.js') }}"></script> 
+<script>
+			var app= angular.module("edgePrice",[]);
+			
+			app.controller("processData",['$scope','$window', '$http',function($scope,$window,$http){
+			$scope.productCategory = 'Men';
+			
+			$scope.productategory = {   
+					"type": "select", 
+					"name": "category",
+					"value": "Electronics", 
+					"values": [ "Electronics","Men","Women","Kids","Home","Vintage & Collectibles","Sports & Outdoors","Beauty,Handmade","Other"] 
+			};
+			$scope.productCondition = {   
+					"type": "select", 
+					"name": "category",
+					"value": "Electronics", 
+					"values": [ "Brand New", "Refurbished", "New & Heavily Used", "Old & Less Used", "Old & Heavily Used"] 
+			};
+			
+			$scope.getCategoryValue = function(){	
+			   var text  = $scope.productCategory;
+				console.log(text);
+			};
+			
+			$scope.getProductPrice = function(){
+				console.log('In Get Product price ');
+				var givenCategory = $scope.productategory.value;
+				var givenCondition = $scope.productCondition.value;
+				var givenName = $scope.productName;
+				var givenDisc = $scope.productDesc;
+				
+				$scope.productDetails = {
+									"product_category" : givenCategory,
+									"product_name" : givenName,
+									"product_desc" : givenDisc,
+									"condition" : givenCondition
+							};
+				$http({
+        				method: "POST",
+			        	url: "receive",
+			        	headers: {
+			            		'Access-Control-Allow-Origin': '*',
+			            		'Content-Type': 'application/json',
+			       		},
+			        	data: 	$scope.productDetails
+			    	}).then(function successCallback(response){
+			        	alert(response.data)
+					//console.log(response.data)
+			        	$scope.message = "";
+			    	});
+				}
+			}]);
+			
+        </script>
+		
+</head>
+<body>
+
+
+	<div class="container-contact100" ng-app="edgePrice" id="EdgePriceDiv"  ng-form name="EdgePriceform" ng-controller="processData">
+		<div  id = "getDetails" class="wrap-contact100">
+			<form class="contact100-form validate-form">
+				<span class="contact100-form-title">
+					Edge Price 
+				</span>
+				
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">Category</span>
+					<div>
+						<select ng-options="category for category in productategory.values" name="singleSelect" id="singleSelect" ng-model="productategory.value" class=" full-width label-font" required>
+						</select>
+					</div>
+					<span class="focus-input100"></span>
+				</div>
+				
+				<div class="wrap-input100 validate-input" data-validate="Name is required">
+					<span class="label-input100">Product</span>
+					<input ng-model='productName' class="input100" type="text" name="name" placeholder="Enter Product Name ">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 input100-select">
+					<span class="label-input100">Condition</span>
+					<div>
+						<select ng-options="category for category in productCondition.values" name="singleSelect" id="singleSelect" ng-model="productCondition.value" class=" full-width label-font" required>
+						</select>
+					</div>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Message is required">
+					<span class="label-input100">Description</span>
+					<textarea ng-model='productDesc' class="input100" name="message" placeholder="Provide details here..."></textarea>
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" ng-click="getProductPrice()" >
+							<span>
+								Predict
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	
+		<div id="showRedection" class="wrap-contact100">Hack The Deal with Price </div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/animsition/js/animsition.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/popper.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}"></script>
+	<script>
+		$(".selection-2").select2({
+			minimumResultsForSearch: 20,
+			dropdownParent: $('#dropDownSelect1')
+		});
+	</script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/moment.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='vendor/daterangepicker/daterangepicker.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='vendor/countdowntime/countdowntime.js') }}"></script>
+<!--===============================================================================================-->
+	<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+</body>
+</html>
